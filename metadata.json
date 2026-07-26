@@ -1,0 +1,8 @@
+{
+  "name": "NOUS",
+  "description": "NOUS — The mind that perceives. A production-grade, privacy-first AI companion and on-device automation framework.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,6 @@
+s/.*val job = kotlinx.coroutines.runBlocking {.*/                val flowValue = kotlinx.coroutines.flow.firstOrNull(repository.getThoughts())/g
+s/.*repository.getThoughts().collect {.*/                val matchedThoughts = flowValue?.filter { t ->/g
+s/.*matchedThoughts = it.filter { t -> .*/                    t.title.contains(args, ignoreCase = true) || t.content.contains(args, ignoreCase = true)/g
+s/.*t.title.contains(args, ignoreCase = true) ||.*/                } ?: emptyList()/g
+s/.*t.content.contains(args, ignoreCase = true).*/\/\/ removed/g
+s/.*}.*//g
