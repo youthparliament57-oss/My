@@ -19,15 +19,22 @@ object LlamaCppProvider {
     private val isLibLoaded = AtomicBoolean(false)
 
     init {
-        try {
-            System.loadLibrary("jarvis_llm")
-            isLibLoaded.set(true)
-            Log.i(TAG, "libjarvis_llm.so successfully loaded into process context.")
-        } catch (e: UnsatisfiedLinkError) {
-            Log.e(TAG, "libjarvis_llm.so binary not found. Standardizing native compilation required.")
-        }
+    try {
+        System.loadLibrary("jarvis_llm")
+        isLibLoaded.set(true)
+        Log.i(TAG, "libjarvis_llm.so successfully loaded")
+    } catch (e: UnsatisfiedLinkError) {
+        Log.e(TAG, "libjarvis_llm.so not found. Native features disabled.", e)
+        isLibLoaded.set(false)
     }
-
+    // Watchdog and model init ko try-catch mein daalo
+    try {
+        startNativeCrashWatchdog()
+        initializeNativeModelIfPresent()
+    } catch (e: Exception) {
+        Log.e(TAG, "Failed to initialize native components", e)
+    }
+    }
     // JNI Native methods
     external fun nativeInitModel(modelPath: String, mmap: Boolean, maxContext: Int, threads: Int): Long
     external fun nativeGenerateStream(modelPtr: Long, prompt: String, lookaheadSize: Int, onToken: (String) -> Unit): String
