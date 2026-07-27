@@ -22,21 +22,24 @@ import javax.inject.Singleton
 object AppModule {
 
     @Provides
-    @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): NousDatabase {
-        val passphrase = DatabaseKeyManager.getDatabasePassphrase()
-        val factory = SupportFactory(passphrase)
-        
-        return Room.databaseBuilder(
-            context,
-            NousDatabase::class.java,
-            "nous_db"
-        )
-        .openHelperFactory(factory)
-        .fallbackToDestructiveMigration()
-        .build()
+@Singleton
+fun provideDatabase(@ApplicationContext context: Context): NousDatabase {
+    val passphrase = try {
+        DatabaseKeyManager.getDatabasePassphrase()
+    } catch (e: Exception) {
+        android.util.Log.e("AppModule", "Keystore failed, using fallback key", e)
+        "NOUS_SYSTEM_SECURE_PASS_FALLBACK".toByteArray()
     }
-
+    val factory = SupportFactory(passphrase)
+    return Room.databaseBuilder(
+        context,
+        NousDatabase::class.java,
+        "nous_db"
+    )
+    .openHelperFactory(factory)
+    .fallbackToDestructiveMigration()
+    .build()
+}
     @Provides
     @Singleton
     fun provideNousDao(database: NousDatabase): NousDao {
