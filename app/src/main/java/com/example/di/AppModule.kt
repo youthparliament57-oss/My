@@ -1,5 +1,6 @@
 package com.example.di
 
+import com.example.di.DatabaseKeyManager
 import android.content.Context
 import androidx.room.Room
 import net.sqlcipher.database.SupportFactory
@@ -23,7 +24,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): NousDatabase {
-        val passphrase = "NOUS_SYSTEM_SECURE_PASS".toByteArray()
+        val passphrase = DatabaseKeyManager.getDatabasePassphrase()
         val factory = SupportFactory(passphrase)
         
         return Room.databaseBuilder(
