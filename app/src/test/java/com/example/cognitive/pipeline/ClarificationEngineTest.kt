@@ -13,32 +13,32 @@ class ClarificationEngineTest {
 
     @Before
     fun setup() {
-        engine = ClarificationEngine()
+        engine = ClarificationEngine(FakeNousRepository())
     }
 
     @Test
-    fun testVagueReference() {
+    fun testVagueReference() = kotlinx.coroutines.runBlocking {
         val result = engine.checkAmbiguity("Can you call her?")
         assertNotNull(result)
         assertEquals(AmbiguityType.VAGUE_REFERENCE, result?.ambiguityType)
     }
 
     @Test
-    fun testMissingParameter() {
+    fun testMissingParameter() = kotlinx.coroutines.runBlocking {
         val result = engine.checkAmbiguity("Set an alarm")
         assertNotNull(result)
         assertEquals(AmbiguityType.MISSING_PARAMETER, result?.ambiguityType)
     }
 
     @Test
-    fun testConflictingIntent() {
+    fun testConflictingIntent() = kotlinx.coroutines.runBlocking {
         val result = engine.checkAmbiguity("Turn off the lights but keep it on")
         assertNotNull(result)
         assertEquals(AmbiguityType.CONFLICTING_INTENT, result?.ambiguityType)
     }
 
     @Test
-    fun testNoAmbiguity() {
+    fun testNoAmbiguity() = kotlinx.coroutines.runBlocking {
         val result = engine.checkAmbiguity("What is the capital of France?")
         assertNull(result)
     }
