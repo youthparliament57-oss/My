@@ -455,7 +455,7 @@ private fun evaluateSimpleMath(expr: String): Double {
             if (parts.size < 2) return "Error: Args must be 'x | y'"
             val x = parts[0].trim().toIntOrNull() ?: return "Invalid X"
             val y = parts[1].trim().toIntOrNull() ?: return "Invalid Y"
-            val success = agent.automation.executeTap(x, y)
+            val success = agent.automation.tap(x, y)
             return if (success) "Tap at ($x, $y) executed." else "Tap failed (No permission or guard blocked)."
         }
     }
@@ -472,7 +472,7 @@ private fun evaluateSimpleMath(expr: String): Double {
             val x2 = parts[2].trim().toIntOrNull() ?: return "Invalid X2"
             val y2 = parts[3].trim().toIntOrNull() ?: return "Invalid Y2"
             val dur = parts[4].trim().toLongOrNull() ?: return "Invalid Duration"
-            val success = agent.automation.executeSwipe(x1, y1, x2, y2, dur)
+            val success = agent.automation.swipe(x1, y1, x2, y2, dur)
             return if (success) "Swipe from ($x1,$y1) to ($x2,$y2) executed." else "Swipe failed."
         }
     }
