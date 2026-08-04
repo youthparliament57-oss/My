@@ -140,6 +140,10 @@ class MemoryInterfaceImpl @Inject constructor(
         memoryDao.insertGraphEdge(entity)
     }
 
+    /**
+     * ⚡ Bolt Optimization: Uses `.asSequence()` for `.filter.sortedByDescending.map`
+     * to prevent intermediate list allocations during heavy memory recall traversals.
+     */
     override suspend fun recall(query: String): MemoryContext {
         val startTime = System.currentTimeMillis()
         val queryEmbedding = omniSlm.generateEmbedding(query)
@@ -156,9 +160,10 @@ class MemoryInterfaceImpl @Inject constructor(
             val nodeVector = VectorMath.jsonToByteVector(node.quantizedEmbeddingJson)
             val similarity = VectorMath.cosineSimilarity(queryEmbedding, nodeVector)
             node.name to similarity
-        }.filter { it.second > 0.4f }
+        }.asSequence().filter { it.second > 0.4f }
          .sortedByDescending { it.second }
          .map { it.first }
+         .toList()
 
         // 3. Knowledge Graph Traversal
         val graphInsights = mutableListOf<String>()

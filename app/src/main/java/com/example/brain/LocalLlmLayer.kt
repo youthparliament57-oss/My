@@ -27,13 +27,7 @@ object LlamaCppProvider {
         Log.e(TAG, "libjarvis_llm.so not found. Native features disabled.", e)
         isLibLoaded.set(false)
     }
-    // Watchdog and model init ko try-catch mein daalo
-    try {
-        startNativeCrashWatchdog()
-        initializeNativeModelIfPresent()
-    } catch (e: Exception) {
-        Log.e(TAG, "Failed to initialize native components", e)
-    }
+
     }
     // JNI Native methods
     external fun nativeInitModel(modelPath: String, mmap: Boolean, maxContext: Int, threads: Int): Long
