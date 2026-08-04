@@ -34,6 +34,10 @@ class CognitiveFacade @Inject constructor(
     private val confidenceModulator: ConfidenceModulator,
     private val traceStore: ReasoningTraceStore
 ) {
+    /**
+     * ⚡ Bolt Optimization: Sequence mapping used in string splitting routines
+     * to reduce redundant allocations when processing LLM-generated decision context.
+     */
     suspend fun processCognitiveTask(query: String, context: BrainContext): CognitiveResult {
         // 1. CACHE CHECK (< 50ms)
         val cacheKey = cache.generateKey(query, context.userId, context.activePersona.name)
@@ -132,9 +136,9 @@ class CognitiveFacade @Inject constructor(
         
         val response = nousRepository.askNousForInsight(prompt, emptyList<com.example.domain.model.Thought>())
         
-        val options = response.substringAfter("OPTIONS:", "").substringBefore("\n").split(",").map { it.trim() }.filter { it.isNotEmpty() }
-        val criteria = response.substringAfter("CRITERIA:", "").substringBefore("\n").split(",").map { it.trim() }.filter { it.isNotEmpty() }
-        val risks = response.substringAfter("RISKS:", "").substringBefore("\n").split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        val options = response.substringAfter("OPTIONS:", "").substringBefore("\n").split(",").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
+        val criteria = response.substringAfter("CRITERIA:", "").substringBefore("\n").split(",").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
+        val risks = response.substringAfter("RISKS:", "").substringBefore("\n").split(",").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
         val preferences = response.substringAfter("PREFERENCES:", "").substringBefore("\n").split(",").associateWith { 2 }
         
         return DecisionContext(if (options.isEmpty()) listOf("Option A", "Option B") else options, criteria, risks, preferences)

@@ -1,5 +1,11 @@
 package com.example.persona
 
+@JvmInline
+value class PersonaArchetype(val archetype: String)
+
+@JvmInline
+value class PersonaTagline(val tagline: String)
+
 enum class PersonaId {
     ATLAS, NOVA, ONYX, SAGE, ECHO, VANGUARD, ARIA, WRAITH, ZENITH
 }
@@ -15,8 +21,8 @@ data class OceanTraits(
 data class Persona(
     val id: PersonaId,
     val name: String,
-    val archetype: String,
-    val tagline: String,
+    val archetype: PersonaArchetype,
+    val tagline: PersonaTagline,
     val oceanTraits: OceanTraits,
     val temperature: Float,
     val topP: Float,
@@ -30,8 +36,8 @@ object PersonaDefinitions {
     val ATLAS = Persona(
         id = PersonaId.ATLAS,
         name = "Atlas",
-        archetype = "Butler",
-        tagline = "Reliable, formal, proactive",
+        archetype = PersonaArchetype("Butler"),
+        tagline = PersonaTagline("Reliable, formal, proactive"),
         oceanTraits = OceanTraits(0.5f, 0.9f, 0.3f, 0.7f, 0.2f),
         temperature = 0.3f, topP = 0.8f, maxTokens = 500,
         voicePitch = 0.8f, voiceRate = 0.9f,
@@ -40,8 +46,8 @@ object PersonaDefinitions {
     val NOVA = Persona(
         id = PersonaId.NOVA,
         name = "Nova",
-        archetype = "Companion",
-        tagline = "Warm, curious, encouraging",
+        archetype = PersonaArchetype("Companion"),
+        tagline = PersonaTagline("Warm, curious, encouraging"),
         oceanTraits = OceanTraits(0.8f, 0.6f, 0.8f, 0.9f, 0.6f),
         temperature = 0.7f, topP = 0.9f, maxTokens = 800,
         voicePitch = 1.2f, voiceRate = 1.1f,
@@ -50,8 +56,8 @@ object PersonaDefinitions {
     val ONYX = Persona(
         id = PersonaId.ONYX,
         name = "Onyx",
-        archetype = "Operator",
-        tagline = "Tactical, concise, mission-focused",
+        archetype = PersonaArchetype("Operator"),
+        tagline = PersonaTagline("Tactical, concise, mission-focused"),
         oceanTraits = OceanTraits(0.3f, 0.9f, 0.2f, 0.4f, 0.1f),
         temperature = 0.1f, topP = 0.5f, maxTokens = 300,
         voicePitch = 0.7f, voiceRate = 1.2f,
@@ -60,8 +66,8 @@ object PersonaDefinitions {
     val SAGE = Persona(
         id = PersonaId.SAGE,
         name = "Sage",
-        archetype = "Mentor",
-        tagline = "Wise, patient, thoughtful",
+        archetype = PersonaArchetype("Mentor"),
+        tagline = PersonaTagline("Wise, patient, thoughtful"),
         oceanTraits = OceanTraits(0.9f, 0.8f, 0.4f, 0.8f, 0.3f),
         temperature = 0.5f, topP = 0.8f, maxTokens = 1000,
         voicePitch = 0.9f, voiceRate = 0.8f,
@@ -70,8 +76,8 @@ object PersonaDefinitions {
     val ECHO = Persona(
         id = PersonaId.ECHO,
         name = "Echo",
-        archetype = "Peer",
-        tagline = "Casual, witty, relatable",
+        archetype = PersonaArchetype("Peer"),
+        tagline = PersonaTagline("Casual, witty, relatable"),
         oceanTraits = OceanTraits(0.7f, 0.4f, 0.9f, 0.7f, 0.5f),
         temperature = 0.8f, topP = 0.9f, maxTokens = 600,
         voicePitch = 1.1f, voiceRate = 1.2f,
@@ -80,8 +86,8 @@ object PersonaDefinitions {
     val VANGUARD = Persona(
         id = PersonaId.VANGUARD,
         name = "Vanguard",
-        archetype = "Tactical",
-        tagline = "Bold, decisive, strategic",
+        archetype = PersonaArchetype("Tactical"),
+        tagline = PersonaTagline("Bold, decisive, strategic"),
         oceanTraits = OceanTraits(0.6f, 0.8f, 0.7f, 0.3f, 0.2f),
         temperature = 0.4f, topP = 0.7f, maxTokens = 500,
         voicePitch = 0.9f, voiceRate = 1.1f,
@@ -90,8 +96,8 @@ object PersonaDefinitions {
     val ARIA = Persona(
         id = PersonaId.ARIA,
         name = "Aria",
-        archetype = "Cheerleader",
-        tagline = "Energetic, optimistic, motivating",
+        archetype = PersonaArchetype("Cheerleader"),
+        tagline = PersonaTagline("Energetic, optimistic, motivating"),
         oceanTraits = OceanTraits(0.7f, 0.7f, 1.0f, 0.9f, 0.4f),
         temperature = 0.9f, topP = 0.9f, maxTokens = 500,
         voicePitch = 1.4f, voiceRate = 1.3f,
@@ -100,8 +106,8 @@ object PersonaDefinitions {
     val WRAITH = Persona(
         id = PersonaId.WRAITH,
         name = "Wraith",
-        archetype = "Stealth",
-        tagline = "Minimal, precise, invisible",
+        archetype = PersonaArchetype("Stealth"),
+        tagline = PersonaTagline("Minimal, precise, invisible"),
         oceanTraits = OceanTraits(0.4f, 0.9f, 0.1f, 0.5f, 0.1f),
         temperature = 0.1f, topP = 0.5f, maxTokens = 150,
         voicePitch = 0.6f, voiceRate = 1.0f,
@@ -110,8 +116,8 @@ object PersonaDefinitions {
     val ZENITH = Persona(
         id = PersonaId.ZENITH,
         name = "Zenith",
-        archetype = "Rescuer",
-        tagline = "Calm under pressure, reassuring",
+        archetype = PersonaArchetype("Rescuer"),
+        tagline = PersonaTagline("Calm under pressure, reassuring"),
         oceanTraits = OceanTraits(0.5f, 0.9f, 0.5f, 0.9f, 0.2f),
         temperature = 0.3f, topP = 0.8f, maxTokens = 600,
         voicePitch = 0.8f, voiceRate = 0.9f,

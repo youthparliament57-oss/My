@@ -92,6 +92,10 @@ class ClarificationEngine @Inject constructor(
 class TaskPlanner @Inject constructor(
     private val nousRepository: NousRepository
 ) {
+    /**
+     * ⚡ Bolt Optimization: Uses `.asSequence()` on string lines before filtering and mapping
+     * to optimize garbage collection when generating planning lists.
+     */
     suspend fun decompose(query: String): List<String> {
         val prompt = """
             Query: $query
@@ -101,10 +105,11 @@ class TaskPlanner @Inject constructor(
         """.trimIndent()
         
         val response = nousRepository.askNousForInsight(prompt, emptyList<com.example.domain.model.Thought>())
-        val lines = response.lines()
+        val lines = response.lines().asSequence()
             .filter { it.trim().startsWith("-") || it.trim().startsWith("*") || it.trim().firstOrNull()?.isDigit() == true }
             .map { it.trim().substringAfter("-").substringAfter("*").trim() }
             .filter { it.isNotEmpty() }
+            .toList()
             
         return if (lines.isNotEmpty()) lines else listOf(query)
     }
